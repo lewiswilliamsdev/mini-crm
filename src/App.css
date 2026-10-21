@@ -1,0 +1,73 @@
+:root {
+    font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+    color: #172338;
+    background: #f5f7fb;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
+
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    min-width: 320px;
+}
+button,
+input,
+select {
+    font: inherit;
+}
+button {
+    cursor: pointer;
+}
+
+#root {
+    min-height: 100vh;
+}
+.search-message {
+    max-width: 1160px;
+    margin: 14px auto;
+    padding: 0 24px;
+    color: #64748b;
+    font-size: 0.92rem;
+}
+.enquiries-container {
+    max-width: 1208px;
+    margin: 0 auto;
+    padding: 8px 24px 64px;
+    display: grid;
+    grid-template-columns: minmax(280px, 350px) minmax(0, 1fr);
+    align-items: start;
+    gap: 24px;
+}
+.enquiry-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 16px;
+    min-width: 0;
+}
+@media (max-width: 1050px) {
+    .enquiry-cards {
+    grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 740px) {
+        .enquiries-container {
+        grid-template-columns: 1fr;
+        padding: 8px 16px 40px;
+        gap: 18px;
+    }
+    .search-message {
+    padding: 0 16px;
+    }
+}
