@@ -1,0 +1,25 @@
+.enquiry-delete-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+
+    padding: 0.2rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: transparent;
+
+    color: #64748b;
+    font-size: 0.6rem;
+    cursor: pointer;
+}
+
+.enquiry-delete-button svg {
+    color: #dc2626;
+    font-size: 1rem;
+}
+
+.enquiry-delete-button:hover {
+    background-color: #fef2f2;
+}

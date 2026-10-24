@@ -5,11 +5,23 @@ import AddEnquiryForm from './components/AddEnquiryForm/form'
 import EnquiryCard from './components/EnquiryCard/EnquiryCard';
 import SearchEnquiries from './components/SearchEnquiries/SearchEnquiries'
 import FilterEnquiries from './components/FilteredEnquiries/FilteredEnquires';
+import DeleteConfirmation from './components/DeleteConfirmation/DeleteConfirmation'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
-  const [customerEnquiries, setCustomerEnquiries] = useState([])
+
+  const  savedEnquiries = localStorage.getItem("customerEnquiries");
+
+  let initialEnquiries;
+  
+  if (savedEnquiries === null) {
+    initialEnquiries = []
+  } else {
+    initialEnquiries = JSON.parse(savedEnquiries)
+  }
+
+  const [customerEnquiries, setCustomerEnquiries] = useState(initialEnquiries)
 
   function addEnquiry(formData) {
 
@@ -46,12 +58,20 @@ function App() {
     })
   }
 
-  const [searchQuery, setSearchQuery] = useState("");
+  const [enquiryPendingDeletion, setEnquiryPendingDeletion] = useState(null)
 
+  function deleteEnquiry(enquiryId) {
+    const updatedCustomerEnquiries = customerEnquiries.filter(function(enquiry) {
+    return enquiry.id !== enquiryId
+  })
+
+  setCustomerEnquiries (updatedCustomerEnquiries)
+}
+
+  const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState("All")
 
   const filteredEnquiries = customerEnquiries.filter(function(enquiry) {
-    console.log(filterStatus);
     return enquiry.company.toLowerCase().includes(searchQuery.toLocaleLowerCase()) &&
     (filterStatus === 'All' || enquiry.status === filterStatus)
   })
@@ -62,9 +82,13 @@ function App() {
     enquiry={enquiry}
     className='enquiry-card'
     onUpdateStatus={updatedEnquiryStatus}
+    onDelete={setEnquiryPendingDeletion}
     />
   })
 
+  useEffect(() => {
+    localStorage.setItem("customerEnquiries", JSON.stringify(customerEnquiries));
+  }, [customerEnquiries]);
 
     return (
     <>
@@ -89,6 +113,16 @@ function App() {
     {enquiryCards}
     </div>
     </div>
+    {enquiryPendingDeletion !== null && 
+    <DeleteConfirmation 
+    onCancel={() => setEnquiryPendingDeletion(null)} 
+    onConfirmDelete={() => {
+      deleteEnquiry(enquiryPendingDeletion);
+      setEnquiryPendingDeletion(null);
+    }
+    }
+    />
+    }
     </>
     )
 }
