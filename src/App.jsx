@@ -83,12 +83,15 @@ function App() {
     className='enquiry-card'
     onUpdateStatus={updatedEnquiryStatus}
     onDelete={setEnquiryPendingDeletion}
+    onEdit={setEnquiryToEdit}
     />
   })
 
   useEffect(() => {
     localStorage.setItem("customerEnquiries", JSON.stringify(customerEnquiries));
   }, [customerEnquiries]);
+
+  const [enquiryToEdit, setEnquiryToEdit] = useState(null);
 
     return (
     <>
@@ -108,7 +111,9 @@ function App() {
     filterStatus={filterStatus}
     />
     <div className='enquiries-container'>
-    <AddEnquiryForm onAddEnquiry={addEnquiry}/>
+    <AddEnquiryForm 
+    onAddEnquiry={addEnquiry} 
+    enquiryToEdit={enquiryToEdit}/>
     <div className='enquiry-cards'>
     {enquiryCards}
     </div>

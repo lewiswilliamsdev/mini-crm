@@ -92,3 +92,11 @@
     border-color: #3775e8;
     box-shadow: 0 0 0 3px rgba(55, 117, 232, .12);
 }
+
+.enquiry-buttons {
+    display: flex;
+
+    gap: 3rem;
+
+    margin-right: 1rem;
+}

@@ -1,6 +1,7 @@
 import './EnquiryCard.css'
 
-import DeleteEnquiry from '../DeleteEnquiry/DeletedEnquiry';
+import DeleteEnquiry from '../DeleteEnquiry/DeleteEnquiry';
+import EditEnquiry from '../EditEnquiry/EditEnquiry'
 
 function EnquiryCard(props) {
     return (
@@ -17,20 +18,27 @@ function EnquiryCard(props) {
             <p>{props.enquiry.phone}</p>
             </div>
             <div className='edit-enquiry-options'>
-                <select name="enquiry-statuses" 
-                    id="enquiry-statuses" 
-                    value={props.enquiry.status}
-                    onChange={(event) => props.onUpdateStatus(props.enquiry.id, event.target.value)}  >
+                    <select name="enquiry-statuses" 
+                        id="enquiry-statuses" 
+                        value={props.enquiry.status}
+                        onChange={(event) => props.onUpdateStatus(props.enquiry.id, event.target.value)}  >
+    
+                        <option value="Active">Active</option>
+                        <option value="Successful">Successful</option>
+                        <option value="Unsuccessful">Unsuccessful</option>
+                    </select>
 
-                    <option value="Active">Active</option>
-                    <option value="Successful">Successful</option>
-                    <option value="Unsuccessful">Unsuccessful</option>
+                <div className="enquiry-buttons">
 
-                </select>
+                    < DeleteEnquiry 
+                        onClick={() => props.onDelete(props.enquiry.id)}
+                    />
+    
+                    < EditEnquiry
+                        onClick={() => props.onEdit(props.enquiry)}
+                    />
 
-                < DeleteEnquiry 
-                    onClick={() => props.onDelete(props.enquiry.id)}
-                />
+                </div>
             </div>
         </div>
     );
