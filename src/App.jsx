@@ -6,6 +6,7 @@ import EnquiryCard from './components/EnquiryCard/EnquiryCard';
 import SearchEnquiries from './components/SearchEnquiries/SearchEnquiries'
 import FilterEnquiries from './components/FilteredEnquiries/FilteredEnquires';
 import DeleteConfirmation from './components/DeleteConfirmation/DeleteConfirmation'
+import SortEnquiries from './components/SortEnquiries/SortEnquiries'
 
 import { useState, useEffect } from 'react';
 
@@ -76,7 +77,27 @@ function App() {
     (filterStatus === 'All' || enquiry.status === filterStatus)
   })
 
-  const enquiryCards = filteredEnquiries.map(function(enquiry) {
+  const [sortOrder, setSortOrder] = useState("default")
+
+  const alphabeticallySortedEnquiries = [...filteredEnquiries].sort((a, b) => {
+    return a.company.localeCompare(b.company)
+  })
+
+  const reverseAlphabeticallySortedEnquiries = [...filteredEnquiries].sort((a, b) => {
+    return b.company.localeCompare(a.company)
+  })
+
+  let sortedEnquiries = filteredEnquiries
+
+  if (sortOrder === "a-z") {
+    sortedEnquiries = alphabeticallySortedEnquiries;
+  } else if (sortOrder === "z-a") {
+    sortedEnquiries = reverseAlphabeticallySortedEnquiries;
+  }
+
+  const [enquiryToEdit, setEnquiryToEdit] = useState(null);
+
+  const enquiryCards = sortedEnquiries.map(function(enquiry) {
     return < EnquiryCard 
     key={enquiry.id}
     enquiry={enquiry}
@@ -91,7 +112,23 @@ function App() {
     localStorage.setItem("customerEnquiries", JSON.stringify(customerEnquiries));
   }, [customerEnquiries]);
 
-  const [enquiryToEdit, setEnquiryToEdit] = useState(null);
+  function updateEnquiry(enquiryId, updatedFormData) {
+    setCustomerEnquiries(previousEnquiries => {
+      return previousEnquiries.map(function(enquiry) {
+        if (enquiry.id === enquiryId) {
+          return {
+            ...enquiry,
+            company: updatedFormData.companyName,
+            contact: updatedFormData.contactName,
+            email: updatedFormData.contactEmail,
+            phone: updatedFormData.contactPhone
+          }
+        } else {
+          return enquiry
+        }
+      });
+    });
+  }
 
     return (
     <>
@@ -106,14 +143,24 @@ function App() {
     {customerEnquiries.length >= 1 && filteredEnquiries.length === 0 && (
       <p className='search-message'>No enquiries found matching your search.</p>
     )}
+    <div className='filter-sort-options'>
     <FilterEnquiries
     onClick={setFilterStatus}
     filterStatus={filterStatus}
     />
+    <SortEnquiries
+    sortOrder={sortOrder}
+    onChange={setSortOrder}
+    />
+    </div>
     <div className='enquiries-container'>
     <AddEnquiryForm 
+    key={enquiryToEdit !== null ? enquiryToEdit.id : "new"}
     onAddEnquiry={addEnquiry} 
-    enquiryToEdit={enquiryToEdit}/>
+    enquiryToEdit={enquiryToEdit}
+    onUpdateEnquiry={updateEnquiry}
+    onFinishEditing={setEnquiryToEdit}
+    />
     <div className='enquiry-cards'>
     {enquiryCards}
     </div>

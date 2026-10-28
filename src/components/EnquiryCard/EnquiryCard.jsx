@@ -1,9 +1,10 @@
-import './EnquiryCard.css'
+import './EnquiryCard.css';
 
 import DeleteEnquiry from '../DeleteEnquiry/DeleteEnquiry';
-import EditEnquiry from '../EditEnquiry/EditEnquiry'
+import EditEnquiry from '../EditEnquiry/EditEnquiry';
 
 function EnquiryCard(props) {
+
     return (
         <div className='enquiry-card'>
             <div className='card-main-info'>
@@ -31,11 +32,15 @@ function EnquiryCard(props) {
                 <div className="enquiry-buttons">
 
                     < DeleteEnquiry 
-                        onClick={() => props.onDelete(props.enquiry.id)}
+                        onClick={() => {
+                            props.onDelete(props.enquiry.id)
+                        }}
                     />
     
-                    < EditEnquiry
-                        onClick={() => props.onEdit(props.enquiry)}
+                    <EditEnquiry
+                        onClick={() => {
+                            props.onEdit(props.enquiry);
+                        }}
                     />
 
                 </div>

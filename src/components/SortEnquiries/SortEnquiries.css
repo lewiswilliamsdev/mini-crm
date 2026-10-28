@@ -1,0 +1,43 @@
+#sort-enquiries {
+    min-width: 150px;
+    padding: 10px 14px;
+
+    background-color: #ffffff;
+    color: #374151;
+
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    cursor: pointer;
+    outline: none;
+
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+#sort-enquiries:hover {
+    border-color: #9ca3af;
+}
+
+#sort-enquiries:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+@media (max-width: 740px) {
+    .filter-sort-options {
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+        padding: 0 16px;
+    }
+
+    #sort-enquiries {
+        width: auto;
+        min-width: 160px;
+        max-width: 100%;
+        align-self: center;
+    }
+}

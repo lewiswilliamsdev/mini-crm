@@ -49,6 +49,7 @@ button {
     align-items: start;
     gap: 24px;
 }
+
 .enquiry-cards {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -56,6 +57,17 @@ button {
     gap: 16px;
     min-width: 0;
 }
+
+.filter-sort-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1160px;
+    width: 100%;
+    margin: 0 auto 16px;
+    gap: 20px;
+}
+
 @media (max-width: 1050px) {
     .enquiry-cards {
     grid-template-columns: 1fr;
@@ -69,5 +81,6 @@ button {
     }
     .search-message {
     padding: 0 16px;
+    text-align: center;
     }
 }

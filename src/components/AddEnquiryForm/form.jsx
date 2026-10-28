@@ -7,13 +7,43 @@ const initialFormState = {
         contactEmail: "",
         contactPhone: ""
     };
+
+
 function AddEnquiryForm(props) {
+
     const [errorMessage, setErrorMessage] = useState("");
 
-    const [formData, setFormData] = useState(initialFormState);
+    const [formData, setFormData] = useState(
+        props.enquiryToEdit !== null
+        ? {
+        companyName: props.enquiryToEdit.company,
+        contactName: props.enquiryToEdit.contact,
+        contactEmail: props.enquiryToEdit.email,
+        contactPhone: props.enquiryToEdit.phone
+        }
+        : initialFormState
+    );
 
     function handleSubmit(event) {
         event.preventDefault();
+
+        const cleanedFormData = {
+            ...formData,
+            companyName: formData.companyName.trim(),
+            contactName: formData.contactName.trim(),
+            contactEmail: formData.contactEmail.trim(),
+            contactPhone: formData.contactPhone.trim()
+        }
+
+        if (!formData.companyName.trim()) {
+            setErrorMessage("Please provide company name")
+            return;
+        }
+
+        if (!formData.contactName.trim()) {
+            setErrorMessage("Please provide contact name")
+            return;
+        }
 
         if (!formData.contactEmail.trim() && !formData.contactPhone.trim()) {
             setErrorMessage("Please provide either an email address or phone number.");
@@ -22,7 +52,12 @@ function AddEnquiryForm(props) {
 
         setErrorMessage("");
 
-        props.onAddEnquiry(formData);
+        if (props.enquiryToEdit !== null) {
+            props.onUpdateEnquiry(props.enquiryToEdit.id, cleanedFormData);
+            props.onFinishEditing(null);
+        } else {
+            props.onAddEnquiry(cleanedFormData);
+        }
 
         setFormData(initialFormState);
     }
@@ -87,7 +122,23 @@ function AddEnquiryForm(props) {
 
             {errorMessage && <p>{errorMessage}</p>}
     
-            <button type="submit">Add Enquiry</button>
+            <button 
+                type="submit" 
+                className={props.enquiryToEdit !== null ? "edit-mode-button" : "add-mode-button"}
+            >
+                {props.enquiryToEdit !== null ? "Update Enquiry" : "Add Enquiry"}
+            </button>
+
+            {props.enquiryToEdit !== null && 
+            <button
+                type="button"
+                className="cancel-edit-button"
+                onClick={() => {
+                    props.onFinishEditing(null)
+                }}
+            >
+                Cancel Edit
+            </button>}
         </form>
     );
 }
