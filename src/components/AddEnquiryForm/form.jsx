@@ -5,7 +5,7 @@ const initialFormState = {
         companyName: "",
         contactName: "",
         contactEmail: "",
-        contactPhone: ""
+        contactPhone: "",
     };
 
 
@@ -19,7 +19,7 @@ function AddEnquiryForm(props) {
         companyName: props.enquiryToEdit.company,
         contactName: props.enquiryToEdit.contact,
         contactEmail: props.enquiryToEdit.email,
-        contactPhone: props.enquiryToEdit.phone
+        contactPhone: props.enquiryToEdit.phone,
         }
         : initialFormState
     );

@@ -7,6 +7,7 @@ import SearchEnquiries from './components/SearchEnquiries/SearchEnquiries'
 import FilterEnquiries from './components/FilteredEnquiries/FilteredEnquires';
 import DeleteConfirmation from './components/DeleteConfirmation/DeleteConfirmation'
 import SortEnquiries from './components/SortEnquiries/SortEnquiries'
+import EnquiryNotesModal from './components/EnquiryNotesModal/EnquiryNotesModal'
 
 import { useState, useEffect } from 'react';
 
@@ -19,7 +20,18 @@ function App() {
   if (savedEnquiries === null) {
     initialEnquiries = []
   } else {
-    initialEnquiries = JSON.parse(savedEnquiries)
+    const parsedEnquiries = JSON.parse(savedEnquiries);
+
+    initialEnquiries = parsedEnquiries.map(function(enquiry) {
+      if (Array.isArray(enquiry.notes)) {
+        return enquiry;
+      } else {
+        return {
+          ...enquiry,
+          notes: []
+        }
+      }
+    })
   }
 
   const [customerEnquiries, setCustomerEnquiries] = useState(initialEnquiries)
@@ -33,6 +45,7 @@ function App() {
     email: formData.contactEmail,
     phone: formData.contactPhone,
     status: "Active",
+    notes: []
   }
 
   setCustomerEnquiries(previousEnquiries => [
@@ -96,6 +109,11 @@ function App() {
   }
 
   const [enquiryToEdit, setEnquiryToEdit] = useState(null);
+  const [enquiryNotesOpen, setEnquiryNotesOpen] = useState(null)
+
+  const selectedEnquiry = customerEnquiries.find(function(enquiry){
+    return enquiry.id === enquiryNotesOpen
+  })
 
   const enquiryCards = sortedEnquiries.map(function(enquiry) {
     return < EnquiryCard 
@@ -105,6 +123,7 @@ function App() {
     onUpdateStatus={updatedEnquiryStatus}
     onDelete={setEnquiryPendingDeletion}
     onEdit={setEnquiryToEdit}
+    onNoteOpen={setEnquiryNotesOpen}
     />
   })
 
@@ -175,6 +194,15 @@ function App() {
     }
     />
     }
+    {enquiryNotesOpen !== null && selectedEnquiry !== undefined && (
+      <EnquiryNotesModal
+        onClose={() => {
+          setEnquiryNotesOpen(null)
+        }
+        }
+        enquiry={selectedEnquiry}
+      />
+    )}
     </>
     )
 }

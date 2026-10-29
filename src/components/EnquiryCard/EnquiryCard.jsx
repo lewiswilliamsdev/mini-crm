@@ -2,6 +2,7 @@ import './EnquiryCard.css';
 
 import DeleteEnquiry from '../DeleteEnquiry/DeleteEnquiry';
 import EditEnquiry from '../EditEnquiry/EditEnquiry';
+import EnquiryNotes from '../EnquiryNotes/EnquiryNotes'
 
 function EnquiryCard(props) {
 
@@ -43,6 +44,11 @@ function EnquiryCard(props) {
                         }}
                     />
 
+                    <EnquiryNotes 
+                        onClick={() => {
+                            props.onNoteOpen(props.enquiry.id)
+                        }}
+                    />
                 </div>
             </div>
         </div>
