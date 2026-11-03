@@ -149,6 +149,28 @@ function App() {
     });
   }
 
+  function saveEnquiryNote(enquiryId, newNote) {
+    const newNoteObject = {
+      id: crypto.randomUUID(),
+      content: newNote,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }
+
+    setCustomerEnquiries(previousEnquiries => {
+      return previousEnquiries.map(function(enquiry) {
+        if (enquiry.id === enquiryId) {
+          return {
+            ...enquiry,
+            notes: [newNoteObject, ...enquiry.notes]
+          }
+        } else {
+          return enquiry
+        }
+      })
+    })
+  }
+
     return (
     <>
     <Navbar title= "Sarahs CRM" />
@@ -201,6 +223,7 @@ function App() {
         }
         }
         enquiry={selectedEnquiry}
+        onSaveNote={saveEnquiryNote}
       />
     )}
     </>

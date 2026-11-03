@@ -14,7 +14,9 @@ function EnquiryNotesModal(props) {
         if (newNoteContent.trim() === "") {
         setNoteError("Please enter a note before saving.");
         return;
-    }
+        }
+
+        props.onSaveNote(props.enquiry.id, newNoteContent.trim())
     }
 
     return (
@@ -52,14 +54,13 @@ function EnquiryNotesModal(props) {
                 {addNotesOpen === true &&
                 <div className="add-note-form">
                     <form
-                    onSubmit={() => {
-                            handleSaveNote()
-                        }}
+                    onSubmit={handleSaveNote}
                     >
                         <textarea 
                         value={newNoteContent}
                         onChange={ (event) => {
                             setNewNoteContent(event.target.value)
+                            setNoteError("")
                         }}
                         />
                         <button 
@@ -67,7 +68,9 @@ function EnquiryNotesModal(props) {
                         >
                             Save Note
                         </button>
-                        </form>
+                    </form>
+
+                    {noteError && <p>{noteError}</p>}
                 </div>
                 }
             </div>
