@@ -171,6 +171,23 @@ function App() {
     })
   }
 
+  function deleteEnquiryNote(enquiryId, noteId) {
+    setCustomerEnquiries(previousEnquiries => {
+      return previousEnquiries.map(function(enquiry) {
+        if (enquiry.id === enquiryId) {
+          return {
+            ...enquiry,
+            notes: enquiry.notes.filter(function(note) {
+              return (note.id !== noteId)
+            })
+          }
+        } else {
+          return enquiry
+        }
+      })
+    })
+  }
+
     return (
     <>
     <Navbar title= "Sarahs CRM" />
@@ -224,6 +241,7 @@ function App() {
         }
         enquiry={selectedEnquiry}
         onSaveNote={saveEnquiryNote}
+        onDelete={deleteEnquiryNote}
       />
     )}
     </>

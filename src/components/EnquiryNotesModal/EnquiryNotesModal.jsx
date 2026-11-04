@@ -2,22 +2,31 @@ import './EnquiryNotesModal.css'
 
 import { useState } from 'react'
 
-function EnquiryNotesModal(props) {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-    const [addNotesOpen, setAddNotesOpen] = useState(false)
-    const [newNoteContent, setNewNoteContent] = useState("")
-    const [noteError, setNoteError] = useState("")
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
-    function handleSaveNote(event) {
-        event.preventDefault();
-
-        if (newNoteContent.trim() === "") {
-        setNoteError("Please enter a note before saving.");
-        return;
+    function EnquiryNotesModal(props) {
+    
+        const [addNotesOpen, setAddNotesOpen] = useState(false);
+        const [newNoteContent, setNewNoteContent] = useState("");
+        const [noteError, setNoteError] = useState("");
+        const [noteBeingEdited, setNoteBeingEdited] = useState(null);
+    
+        function handleSaveNote(event) {
+            event.preventDefault();
+    
+            if (newNoteContent.trim() === "") {
+            setNoteError("Please enter a note before saving.");
+            return;
+            }
+    
+            props.onSaveNote(props.enquiry.id, newNoteContent.trim());
+    
+            setNewNoteContent("");
+            setAddNotesOpen(false);
         }
-
-        props.onSaveNote(props.enquiry.id, newNoteContent.trim())
-    }
 
     return (
         <div className='notes-modal-overlay'>
@@ -28,11 +37,31 @@ function EnquiryNotesModal(props) {
                 )}
                 {props.enquiry.notes.length >= 1 && (
                     props.enquiry.notes.map(function(note) {
-                        return <p
+                        return <div className="note-container" 
                         key={note.id}
                         >
-                            {note.content}
-                        </p>
+                            <p>
+                                {note.content}
+                            </p>
+                            <button
+                                className='edit-note-button'
+                                onClick={() => {
+                                    setNoteBeingEdited(note.id)
+                                    setNewNoteContent(note.content)
+                                    setAddNotesOpen(true)
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faPenToSquare} />
+                                Edit
+                            </button>
+                            <button
+                                className='delete-note-button'
+                                onClick={() => props.onDelete(props.enquiry.id, note.id)}
+                            >
+                                <FontAwesomeIcon icon={faTrash} />
+                                Delete
+                            </button>
+                        </div>
                     })
                 )}
                 <button 
@@ -44,12 +73,21 @@ function EnquiryNotesModal(props) {
                     Exit
                 </button>
                 <button 
-                    className='add-notes-button'
+                    className={addNotesOpen ? "add-notes-button cancel-note" : "add-notes-button"}
                     onClick={() => {
                         setAddNotesOpen(!addNotesOpen)
+                        setNoteBeingEdited(null)
+                        setNewNoteContent("")
+                        setNoteError("")
                     }}
                 >
-                    Add a new note
+                    {addNotesOpen === false &&
+                    <p>Add a new note</p>
+                    }
+                    {addNotesOpen === true &&
+                    <p
+                    >Cancel Note</p>
+                    }
                 </button>
                 {addNotesOpen === true &&
                 <div className="add-note-form">
@@ -66,7 +104,7 @@ function EnquiryNotesModal(props) {
                         <button 
                         type='submit'
                         >
-                            Save Note
+                            {noteBeingEdited === null ? "Save note" : "Save changes"}
                         </button>
                     </form>
 
