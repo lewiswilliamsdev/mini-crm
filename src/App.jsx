@@ -188,6 +188,27 @@ function App() {
     })
   }
 
+  function updateEnquiryNote(enquiryId, noteId, updatedContent) {
+    setCustomerEnquiries(previousEnquiries => {
+      return previousEnquiries.map(function(enquiry) {
+        if (enquiryId === enquiry.id) {
+          return {
+            ...enquiry,
+            notes: enquiry.notes.map(function(note) {
+              if (noteId === note.id) {
+                return {
+                  ...note,
+                  content: updatedContent,
+                  updatedAt: new Date().toISOString()
+                }
+              } else return note;
+            })
+          }
+        } else return enquiry;
+      })
+    })
+  }
+
     return (
     <>
     <Navbar title= "Sarahs CRM" />
@@ -242,6 +263,7 @@ function App() {
         enquiry={selectedEnquiry}
         onSaveNote={saveEnquiryNote}
         onDelete={deleteEnquiryNote}
+        onUpdateNote={updateEnquiryNote}
       />
     )}
     </>

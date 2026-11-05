@@ -21,11 +21,16 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
             setNoteError("Please enter a note before saving.");
             return;
             }
-    
-            props.onSaveNote(props.enquiry.id, newNoteContent.trim());
+
+            if (noteBeingEdited === null) {
+                props.onSaveNote(props.enquiry.id, newNoteContent.trim());
+            } else {
+                props.onUpdateNote(props.enquiry.id, noteBeingEdited, newNoteContent.trim());
+            }
     
             setNewNoteContent("");
             setAddNotesOpen(false);
+            setNoteBeingEdited(null);
         }
 
     return (
