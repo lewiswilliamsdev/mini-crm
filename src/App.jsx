@@ -45,7 +45,8 @@ function App() {
     email: formData.contactEmail,
     phone: formData.contactPhone,
     status: "Active",
-    notes: []
+    notes: [],
+    activityHistory: [],
   }
 
   setCustomerEnquiries(previousEnquiries => [
@@ -60,7 +61,15 @@ function App() {
         if (enquiry.id === enquiryId) {
           const updatedEnquiry = {
             ...enquiry,
-            status: newStatus
+            activityHistory: [ {
+              newValue: newStatus,
+              oldValue: enquiry.status,
+              id: crypto.randomUUID(),
+              type: "status_change",
+              createdAt: new Date().toISOString()
+            },
+            ...enquiry.activityHistory ],
+            status: newStatus,
           }
           return updatedEnquiry;
         }
