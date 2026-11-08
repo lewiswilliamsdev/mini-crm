@@ -6,6 +6,7 @@ const initialFormState = {
         contactName: "",
         contactEmail: "",
         contactPhone: "",
+        quickNote: ""
     };
 
 
@@ -16,10 +17,11 @@ function AddEnquiryForm(props) {
     const [formData, setFormData] = useState(
         props.enquiryToEdit !== null
         ? {
-        companyName: props.enquiryToEdit.company,
-        contactName: props.enquiryToEdit.contact,
-        contactEmail: props.enquiryToEdit.email,
-        contactPhone: props.enquiryToEdit.phone,
+            ...initialFormState,
+            companyName: props.enquiryToEdit.company,
+            contactName: props.enquiryToEdit.contact,
+            contactEmail: props.enquiryToEdit.email,
+            contactPhone: props.enquiryToEdit.phone,
         }
         : initialFormState
     );
@@ -32,7 +34,8 @@ function AddEnquiryForm(props) {
             companyName: formData.companyName.trim(),
             contactName: formData.contactName.trim(),
             contactEmail: formData.contactEmail.trim(),
-            contactPhone: formData.contactPhone.trim()
+            contactPhone: formData.contactPhone.trim(),
+            quickNote: formData.quickNote.trim()
         }
 
         if (!formData.companyName.trim()) {
@@ -119,6 +122,24 @@ function AddEnquiryForm(props) {
             placeholder="07345 234256"
             id="contact-phone-input"
             />
+
+            {props.enquiryToEdit === null && (
+                <div className="quick-note-container">
+                    <label htmlFor="quick-note">Quick Note</label>
+                    <textarea
+                        name="quick-note" 
+                        id="quick-note"
+                        value={formData.quickNote}
+                        onChange={ (event) => {
+                            setFormData(previousData => ({
+                                ...previousData,
+                                quickNote: event.target.value
+                            }))
+                        }}
+                        
+                    />
+            </div>
+            )}
 
             {errorMessage && <p>{errorMessage}</p>}
     

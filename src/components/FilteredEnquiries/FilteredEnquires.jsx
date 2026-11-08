@@ -1,6 +1,5 @@
 import './FilteredEnquiries.css'
 function FilterEnquiries(props) {
-    console.log()
     return (
         <div className='filter-container'>
         <h3>Enquiry Status</h3>

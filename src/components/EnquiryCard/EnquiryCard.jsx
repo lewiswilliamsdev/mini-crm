@@ -3,6 +3,7 @@ import './EnquiryCard.css';
 import DeleteEnquiry from './EnquiryCardButtons/DeleteEnquiry/DeleteEnquiry';
 import EditEnquiry from './EnquiryCardButtons/EditEnquiry/EditEnquiry';
 import EnquiryNotes from './EnquiryCardButtons/EnquiryNotes/EnquiryNotes'
+import EnquiryActivity from './EnquiryCardButtons/EnquiryActivity/EnquiryActivity'
 
 function EnquiryCard(props) {
 
@@ -46,6 +47,12 @@ function EnquiryCard(props) {
                     <EnquiryNotes 
                         onClick={() => {
                             props.onNoteOpen(props.enquiry.id)
+                        }}
+                    />
+
+                    <EnquiryActivity
+                        onClick={() => {
+                            props.onActivityOpen(props.enquiry.id)
                         }}
                     />
                 </div>

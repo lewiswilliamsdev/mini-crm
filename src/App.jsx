@@ -8,6 +8,7 @@ import FilterEnquiries from './components/FilteredEnquiries/FilteredEnquires';
 import DeleteConfirmation from './components/DeleteConfirmation/DeleteConfirmation'
 import SortEnquiries from './components/SortEnquiries/SortEnquiries'
 import EnquiryNotesModal from './components/EnquiryNotesModal/EnquiryNotesModal'
+import EnquiryActivityModal from './components/EnquiryActivityModal/EnquiryActivityModal';
 
 import { useState, useEffect } from 'react';
 
@@ -42,7 +43,14 @@ function App() {
     email: formData.contactEmail,
     phone: formData.contactPhone,
     status: "Active",
-    notes: [],
+    notes: formData.quickNote === "" ? [] : [
+      {
+        id: crypto.randomUUID(),
+        content: formData.quickNote,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }
+    ],
     activityHistory: [],
   }
 
@@ -51,8 +59,6 @@ function App() {
     ...previousEnquiries
   ])
   }
-
-  console.log(customerEnquiries);
 
   function updatedEnquiryStatus(enquiryId, newStatus) {
     setCustomerEnquiries(previousEnquiries => {
@@ -124,6 +130,10 @@ function App() {
     return enquiry.id === enquiryNotesOpen
   })
 
+  const selectedActivityEnquiry = customerEnquiries.find(function(enquiry) {
+    return enquiry.id === enquiryActivityOpen
+  })
+
   const enquiryCards = sortedEnquiries.map(function(enquiry) {
     return < EnquiryCard 
     key={enquiry.id}
@@ -133,6 +143,7 @@ function App() {
     onDelete={setEnquiryPendingDeletion}
     onEdit={setEnquiryToEdit}
     onNoteOpen={setEnquiryNotesOpen}
+    onActivityOpen={setEnquiryActivityOpen}
     />
   })
 
@@ -273,6 +284,14 @@ function App() {
         onSaveNote={saveEnquiryNote}
         onDelete={deleteEnquiryNote}
         onUpdateNote={updateEnquiryNote}
+      />
+    )}
+    {enquiryActivityOpen !== null && selectedActivityEnquiry !== undefined && (
+      <EnquiryActivityModal
+      onClose={() => {
+        setEnquiryActivityOpen(null)
+      }}
+      enquiry={selectedActivityEnquiry}
       />
     )}
     </>
