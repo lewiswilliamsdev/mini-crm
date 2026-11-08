@@ -22,17 +22,14 @@ function App() {
   } else {
     const parsedEnquiries = JSON.parse(savedEnquiries);
 
-    initialEnquiries = parsedEnquiries.map(function(enquiry) {
-      if (Array.isArray(enquiry.notes)) {
-        return enquiry;
-      } else {
+      initialEnquiries = parsedEnquiries.map(function(enquiry) {
         return {
           ...enquiry,
-          notes: []
+          notes: Array.isArray(enquiry.notes) ? enquiry.notes : [],
+          activityHistory: Array.isArray(enquiry.activityHistory) ? enquiry.activityHistory : []
         }
-      }
-    })
-  }
+      })
+    }
 
   const [customerEnquiries, setCustomerEnquiries] = useState(initialEnquiries)
 
@@ -54,6 +51,8 @@ function App() {
     ...previousEnquiries
   ])
   }
+
+  console.log(customerEnquiries);
 
   function updatedEnquiryStatus(enquiryId, newStatus) {
     setCustomerEnquiries(previousEnquiries => {
@@ -118,9 +117,10 @@ function App() {
   }
 
   const [enquiryToEdit, setEnquiryToEdit] = useState(null);
-  const [enquiryNotesOpen, setEnquiryNotesOpen] = useState(null)
+  const [enquiryNotesOpen, setEnquiryNotesOpen] = useState(null);
+  const [enquiryActivityOpen, setEnquiryActivityOpen] = useState(null);
 
-  const selectedEnquiry = customerEnquiries.find(function(enquiry){
+  const selectedNotesEnquiry = customerEnquiries.find(function(enquiry){
     return enquiry.id === enquiryNotesOpen
   })
 
@@ -263,13 +263,13 @@ function App() {
     }
     />
     }
-    {enquiryNotesOpen !== null && selectedEnquiry !== undefined && (
+    {enquiryNotesOpen !== null && selectedNotesEnquiry !== undefined && (
       <EnquiryNotesModal
         onClose={() => {
           setEnquiryNotesOpen(null)
         }
         }
-        enquiry={selectedEnquiry}
+        enquiry={selectedNotesEnquiry}
         onSaveNote={saveEnquiryNote}
         onDelete={deleteEnquiryNote}
         onUpdateNote={updateEnquiryNote}

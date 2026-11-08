@@ -3,7 +3,8 @@ function SearchEnquiries(props) {
 
     return (
         <div className="search-enquiries">
-            <input 
+            <input
+            id='search-enquiries-input' 
             type="search" 
             placeholder="Search by company name..."
             value={props.searchQuery}

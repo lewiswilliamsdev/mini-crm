@@ -1,8 +1,8 @@
 import './EnquiryCard.css';
 
-import DeleteEnquiry from '../DeleteEnquiry/DeleteEnquiry';
-import EditEnquiry from '../EditEnquiry/EditEnquiry';
-import EnquiryNotes from '../EnquiryNotes/EnquiryNotes'
+import DeleteEnquiry from './EnquiryCardButtons/DeleteEnquiry/DeleteEnquiry';
+import EditEnquiry from './EnquiryCardButtons/EditEnquiry/EditEnquiry';
+import EnquiryNotes from './EnquiryCardButtons/EnquiryNotes/EnquiryNotes'
 
 function EnquiryCard(props) {
 
@@ -20,8 +20,7 @@ function EnquiryCard(props) {
             <p>{props.enquiry.phone}</p>
             </div>
             <div className='edit-enquiry-options'>
-                    <select name="enquiry-statuses" 
-                        id="enquiry-statuses" 
+                    <select name="enquiry-statuses"
                         value={props.enquiry.status}
                         onChange={(event) => props.onUpdateStatus(props.enquiry.id, event.target.value)}  >
     
